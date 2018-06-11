@@ -5,15 +5,37 @@
 ## The second variable first checks to see if the calculation has been cached, if not
 ## it performs the calculation.
 
-## Write a short comment describing this function
+## This function assigns sets a value for the matrix, sets the solution for the inversion 
+## and then gets the inversion
 
 makeCacheMatrix <- function(x = matrix()) {
+  m <- matrix()
   
+  set <- function(y){
+    x<<-y
+    m<<- matrix()
+  }
+  
+  get <- function() x
+  setsolve <- function(solve) m <<- solve
+  getsolve <- function() m
+  list(set = set, get = get,
+       setsolve = setsolve,
+       getsolve = setsolve)
 }
 
 
-## Write a short comment describing this function
+## This function performs the caluation of the inversion of the matrix
+## Yet it firsts checks to see if the calculation has already been made
 
 cacheSolve <- function(x, ...) {
-  ## Return a matrix that is the inverse of 'x'
+  m <- x$getsolve()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setsolve(m)
+  m
 }
